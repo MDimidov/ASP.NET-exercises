@@ -5,11 +5,11 @@ using Practice.Services;
 
 namespace Practice.Controllers
 {
-    public class IntroController : Controller
+    public class StudentController : Controller
     {
         private readonly IStudentService studentService;
 
-        public IntroController(IStudentService _studentService)
+        public StudentController(IStudentService _studentService)
         {
             studentService = _studentService;
         }
