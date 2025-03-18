@@ -26,7 +26,7 @@ namespace Practice.Controllers
         {
             ViewBag.Title = "Show student info";
 
-            Student model = studentService.GetStudent(id);
+            Student? model = studentService.GetStudent(id);
 
             return View("StudentInfo", model);
         }

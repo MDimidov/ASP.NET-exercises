@@ -5,7 +5,7 @@ namespace Practice.Services
 {
     public class StudentService : IStudentService
     {
-        public Student GetStudent(int id)
+        public Student? GetStudent(int id)
         {
             return Database.GetStudent(id);
         }

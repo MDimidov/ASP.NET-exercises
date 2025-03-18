@@ -18,14 +18,14 @@
             },
         };
 
-        public static Student GetStudent(int id)
+        public static Student? GetStudent(int id)
         {
             return _students.FirstOrDefault(s => s.Id == id);
         }
 
         public static bool UpdateStudent(Student student)
         {
-            Student existingStudent = _students.FirstOrDefault(s => s.Id == student.Id);
+            Student? existingStudent = _students.FirstOrDefault(s => s.Id == student.Id);
             bool result = false;
 
             if (existingStudent != null)
