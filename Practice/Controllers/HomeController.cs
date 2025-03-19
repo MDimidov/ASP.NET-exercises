@@ -23,6 +23,15 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult About()
+    {
+        ViewData["Title"] = "About Page";
+        ViewBag.Message = "This is an ASP.NET Core MVC app.";
+
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
