@@ -7,10 +7,10 @@ namespace ChatApp.Controllers
     {
         private static ICollection<MessageViewModel> messages = new List<MessageViewModel>();
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(Show));
+        }
 
         public IActionResult Show()
         {
