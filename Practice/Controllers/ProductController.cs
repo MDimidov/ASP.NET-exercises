@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Practice.Contracts;
 using Practice.Models.Product;
 using Practice.Services;
+using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
@@ -45,6 +47,18 @@ namespace Practice.Controllers
         }
 
         [HttpGet]
+        public IActionResult All(string keyword = "")
+        {
+            ViewBag.Title = $"All products with match \"{keyword}\"";
+
+            var matchedProducts = products
+                .Where(p =>
+                    p.Name.ToLower().Contains(keyword.ToLower()));
+
+            return View(nameof(Index), matchedProducts);
+        }
+
+        [HttpGet]
         public IActionResult ById(int id)
         {
             var product = productService.GetProductById(id, products);
@@ -72,6 +86,13 @@ namespace Practice.Controllers
         public IActionResult AllAsText()
         {
             return Content(productService.GetAllProductsAsPlainText(products));
+        }
+
+        [HttpGet]
+        public IActionResult AllAsTextFile()
+        {
+            Response.Headers.Append(HeaderNames.ContentDisposition, @"attachment;filename=products.txt");
+            return File(Encoding.UTF8.GetBytes(productService.GetAllProductsAsPlainText(products)), "text/plain");
         }
     }
 }
