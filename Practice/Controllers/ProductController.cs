@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Practice.Contracts;
 using Practice.Models.Product;
+using Practice.Services;
 
 namespace Practice.Controllers
 {
@@ -27,10 +29,33 @@ namespace Practice.Controllers
             },
         };
 
+        private readonly IProductService productService;
+
+        public ProductController(IProductService _productService)
+        {
+            productService = _productService;
+        }
+
         public IActionResult Index()
         {
             ViewBag.Title = "All products";
             return View(products);
+        }
+
+        [HttpGet]
+        public IActionResult ById(int id)
+        {
+            var product = productService.GetProductById(id, products);
+
+            if(product == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            IEnumerable<ProductViewModel> model = new List<ProductViewModel>() { product };
+
+            ViewBag.Title = $"Product N.{product.Id}";
+            return View(nameof(Index), model);
         }
     }
 }
