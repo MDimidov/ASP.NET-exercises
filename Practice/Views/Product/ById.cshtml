@@ -1,0 +1,12 @@
+﻿@using Practice.Models.Product
+@model ProductViewModel
+
+<div class="card col-3">
+    <div class="card-header">@ViewBag.Title</div>
+    <div class="list-group list-group-flush">
+            <div class="list-group-item">
+                <h2>Product Name: @Model.Name</h2>
+                <p>Price: @Model.Price lv.</p>
+            </div>
+    </div>
+</div>

@@ -51,11 +51,8 @@ namespace Practice.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            IEnumerable<ProductViewModel> model = new List<ProductViewModel>() { product };
-
             ViewBag.Title = $"Product N.{product.Id}";
-            return View(nameof(Index), model);
+            return View(product);
         }
     }
 }
