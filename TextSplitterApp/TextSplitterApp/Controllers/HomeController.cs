@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TextSplitterApp.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TextSplitterApp.Controllers
 {
@@ -13,10 +14,23 @@ namespace TextSplitterApp.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(TextViewModel model)
         {
-            return View();
+            return View(model);
         }
+
+        [HttpPost]
+        public IActionResult SplitText(TextViewModel textModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(Index), textModel);
+            }
+
+            return View(nameof(Index), textModel);
+        }
+
+
 
         public IActionResult Privacy()
         {
