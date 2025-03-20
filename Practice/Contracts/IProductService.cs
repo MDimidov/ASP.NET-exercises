@@ -5,5 +5,7 @@ namespace Practice.Contracts
     public interface IProductService
     {
         ProductViewModel? GetProductById(int id, IEnumerable<ProductViewModel> products);
+
+        string GetAllProductsAsPlainText(IEnumerable<ProductViewModel> products);
     }
 }

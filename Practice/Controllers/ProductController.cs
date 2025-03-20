@@ -2,6 +2,7 @@
 using Practice.Contracts;
 using Practice.Models.Product;
 using Practice.Services;
+using System.Text;
 using System.Text.Json;
 
 namespace Practice.Controllers
@@ -65,6 +66,12 @@ namespace Practice.Controllers
             };
 
             return Json(products, allProducts);
+        }
+
+        [HttpGet]
+        public IActionResult AllAsText()
+        {
+            return Content(productService.GetAllProductsAsPlainText(products));
         }
     }
 }
