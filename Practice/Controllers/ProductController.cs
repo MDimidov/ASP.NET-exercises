@@ -2,6 +2,7 @@
 using Practice.Contracts;
 using Practice.Models.Product;
 using Practice.Services;
+using System.Text.Json;
 
 namespace Practice.Controllers
 {
@@ -47,12 +48,23 @@ namespace Practice.Controllers
         {
             var product = productService.GetProductById(id, products);
 
-            if(product == null)
+            if (product == null)
             {
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Title = $"Product N.{product.Id}";
             return View(product);
+        }
+
+        [HttpGet]
+        public IActionResult AllAsJson()
+        {
+            var allProducts = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+
+            return Json(products, allProducts);
         }
     }
 }
