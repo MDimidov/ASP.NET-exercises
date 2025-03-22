@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using ShoppingListApp.Contracts;
 using ShoppingListApp.Data;
+using ShoppingListApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Custom Services
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // EFCore DbContext
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;

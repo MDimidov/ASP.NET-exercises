@@ -16,11 +16,6 @@ namespace ShoppingListApp.Data.Models
         public required string Name { get; set; }
 
         [Required]
-        [StringLength(150)]
-        [Comment("Product Description")]
-        public required string Description { get; set; }
-
-        [Required]
         [Comment("Product Price")]
         public decimal Price { get; set; }
 
