@@ -1,0 +1,30 @@
+﻿@model ProductViewModel
+
+@{
+    ViewBag.Title = "Edit Product";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row">
+    <form asp-action="Edit" method="post">
+        <div class="form-group">
+            <div class="mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Write your product name here..." />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" placeholder="Write your product name here..." />
+                <span asp-validation-for="Price" class="text-danger small"></span>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary mt-3" value="Edit Product" />
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

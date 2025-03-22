@@ -8,8 +8,10 @@ namespace ShoppingListApp.Contracts
 
         Task<ProductViewModel> GetProductByIdAsync(int id);
 
-        Task UpdateProductById(ProductViewModel productViewModel);
+        Task UpdateProductAsync(ProductViewModel productViewModel);
 
         Task DeleteProductByIdAsync(int id);
+
+        Task CreateProductAsync(ProductViewModel productViewModel);
     }
 }
