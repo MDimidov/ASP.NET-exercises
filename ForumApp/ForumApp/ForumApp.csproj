@@ -17,4 +17,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ForumApp.Infrastructure\ForumApp.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

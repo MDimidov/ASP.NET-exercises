@@ -1,7 +1,17 @@
+using ForumApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new ArgumentException("Failed to load connection string");
+builder.Services.AddDbContext<ForumAppDbContext>(opt =>
+{
+    opt.UseSqlServer(connectionString);
+});
 
 var app = builder.Build();
 
