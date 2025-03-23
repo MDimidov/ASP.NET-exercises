@@ -41,5 +41,26 @@ namespace ForumApp.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            PostModel model = await postService.GetPostByIdAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(PostModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await postService.EditPostAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -1,14 +1,14 @@
 ﻿@model PostModel
 
 @{
-    ViewBag.Title = "Add Post";
+    ViewBag.Title = "Edit Post";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="row">
-    <form method="post" asp-action="Add">
+    <form method="post">
         <div class="form-group">
             <div class="mb-3">
                 <label asp-for="Title"></label>
@@ -21,10 +21,10 @@
                 <span asp-validation-for="@Model.Content" class="small text-danger"></span>
             </div>
         </div>
-        <input class="btn btn-primary mt-3" type="submit" value="Create" />
+        <input class="btn btn-primary mt-3" type="submit" value="Edit" />
     </form>
 </div>
 
-@section Scripts{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

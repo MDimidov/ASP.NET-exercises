@@ -27,6 +27,20 @@ namespace ForumApp.Core.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task EditPostAsync(PostModel model)
+        {
+            Post? entity = await context.FindAsync<Post>(model.Id);
+
+            if (entity == null)
+            {
+                throw new ArgumentException($"No such post with id = {model.Id}");
+            }
+
+            entity.Title = model.Title;
+            entity.Content = model.Content;
+            await context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<PostModel>> GetAllAsync()
             => await context.Posts
                 .Select(p => new PostModel
@@ -37,5 +51,17 @@ namespace ForumApp.Core.Services
                 })
             .AsNoTracking() 
             .ToListAsync();
+
+        public async Task<PostModel> GetPostByIdAsync(int id)
+        {
+            Post? entity = await context.FindAsync<Post>(id);
+
+            if (entity == null)
+            {
+                throw new ArgumentException($"No such post with id = {id}");
+            }
+
+            return new PostModel { Id = entity.Id, Content = entity.Content, Title = entity.Title };
+        }
     }
 }
