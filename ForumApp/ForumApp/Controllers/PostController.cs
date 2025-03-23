@@ -20,5 +20,26 @@ namespace ForumApp.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            PostModel model = new();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(PostModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await postService.AddNewPostAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

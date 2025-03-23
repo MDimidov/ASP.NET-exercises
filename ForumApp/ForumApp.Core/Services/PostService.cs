@@ -1,6 +1,7 @@
 ﻿using ForumApp.Core.Contracts;
 using ForumApp.Core.Models;
 using ForumApp.Infrastructure.Data;
+using ForumApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ForumApp.Core.Services
@@ -12,6 +13,18 @@ namespace ForumApp.Core.Services
         public PostService(ForumAppDbContext context)
         {
             this.context = context;
+        }
+
+        public async Task AddNewPostAsync(PostModel model)
+        {
+            Post entity = new()
+            {
+                Title = model.Title,
+                Content = model.Content,
+            };
+
+            await context.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PostModel>> GetAllAsync()

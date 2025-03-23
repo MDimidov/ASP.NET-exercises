@@ -19,13 +19,13 @@ namespace ForumApp.Core.Models
         /// </summary>
         [Required(ErrorMessage = RequredMessage)]
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength, ErrorMessage = LengthMessage)]
-        public required string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// Post content
         /// </summary>
         [Required(ErrorMessage = RequredMessage)]
         [StringLength(ContentMaxLength, MinimumLength = ContentMinLength, ErrorMessage = LengthMessage)]
-        public required string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
     }
 }
