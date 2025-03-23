@@ -1,4 +1,5 @@
 ﻿using ForumApp.Core.Contracts;
+using ForumApp.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumApp.Controllers
@@ -12,9 +13,12 @@ namespace ForumApp.Controllers
             this.postService = postService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<PostModel> model = await postService.GetAllAsync();
+
+            return View(model);
         }
     }
 }
