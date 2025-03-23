@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\ForumApp.Infrastructure\ForumApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
