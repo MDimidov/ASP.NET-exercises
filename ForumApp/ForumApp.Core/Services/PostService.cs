@@ -27,6 +27,19 @@ namespace ForumApp.Core.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task DeletePostById(int id)
+        {
+            Post? entity = await context.FindAsync<Post>(id);
+
+            if (entity == null)
+            {
+                throw new ArgumentException($"No such post with id = {id}");
+            }
+
+            context.Posts.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+
         public async Task EditPostAsync(PostModel model)
         {
             Post? entity = await context.FindAsync<Post>(model.Id);
@@ -52,13 +65,13 @@ namespace ForumApp.Core.Services
             .AsNoTracking() 
             .ToListAsync();
 
-        public async Task<PostModel> GetPostByIdAsync(int id)
+        public async Task<PostModel?> GetPostByIdAsync(int id)
         {
             Post? entity = await context.FindAsync<Post>(id);
 
             if (entity == null)
             {
-                throw new ArgumentException($"No such post with id = {id}");
+                return null;
             }
 
             return new PostModel { Id = entity.Id, Content = entity.Content, Title = entity.Title };
