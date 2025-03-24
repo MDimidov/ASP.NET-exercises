@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenNumbersThread", "EvenNu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumEvenesInRange", "SumEvenesInRange\SumEvenesInRange.csproj", "{559D261E-833D-4C62-A782-88E430C1683B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumEvensInBackground", "SumEvensInBackground\SumEvensInBackground.csproj", "{6E33F141-2CF1-4B4C-B9F4-A33E5AAF1CEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{559D261E-833D-4C62-A782-88E430C1683B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{559D261E-833D-4C62-A782-88E430C1683B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{559D261E-833D-4C62-A782-88E430C1683B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E33F141-2CF1-4B4C-B9F4-A33E5AAF1CEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E33F141-2CF1-4B4C-B9F4-A33E5AAF1CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E33F141-2CF1-4B4C-B9F4-A33E5AAF1CEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E33F141-2CF1-4B4C-B9F4-A33E5AAF1CEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
