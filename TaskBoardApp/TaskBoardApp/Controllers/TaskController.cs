@@ -47,6 +47,12 @@ namespace TaskBoardApp.Controllers
             return RedirectToAction("Index", "Board");
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            TaskDetailsViewModel model = await taskService.GetTaskById(id);
+            return View(model);
+        }
+
         private string GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;

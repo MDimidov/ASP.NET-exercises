@@ -5,5 +5,6 @@ namespace TaskBoardApp.Contracts
     public interface ITaskService
     {
         Task CreateTaskAsync(TaskFormModel model, string userId);
+        Task<TaskDetailsViewModel> GetTaskById(int id);
     }
 }
