@@ -30,5 +30,11 @@ namespace TaskBoardApp.Services
                     })
                 })
                 .ToListAsync();
+
+        public async Task<IEnumerable<TaskBoardModel>> GetBoardsListAsync()
+            => await context.Boards
+                .AsNoTracking()
+                .Select(b => new TaskBoardModel { Id = b.Id, Name = b.Name, })
+                .ToListAsync();
     }
 }

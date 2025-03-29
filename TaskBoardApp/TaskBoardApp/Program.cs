@@ -25,6 +25,7 @@ builder.Services.AddControllersWithViews();
 
 // Add Application services to IoC container
 builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 var app = builder.Build();
 

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskBoardApp.Contracts;
 using TaskBoardApp.Models.Board;
 
 namespace TaskBoardApp.Controllers
 {
+    [Authorize]
     public class BoardController : Controller
     {
         private readonly IBoardService boardService;
