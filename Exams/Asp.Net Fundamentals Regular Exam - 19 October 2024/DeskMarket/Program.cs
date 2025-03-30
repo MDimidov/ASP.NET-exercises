@@ -1,4 +1,6 @@
+using DeskMarket.Contracts;
 using DeskMarket.Data;
+using DeskMarket.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,9 @@ namespace DeskMarket
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            // Add application services to IoC container
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             var app = builder.Build();
 
