@@ -53,7 +53,26 @@ namespace DeskMarket.Services
             }
         }
 
+        public async Task EditProductAsync(ProductEditFormModel model, int productId)
+        {
+            Product? productEntity = await context.Products.FindAsync(productId);
 
+            if (productEntity == null)
+            {
+                throw new ArgumentException($"No such product with id: {productId}");
+            }
+
+            DateTime.TryParseExact(model.AddedOn, AddedOnFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime addedOn);
+
+
+            productEntity.ProductName = model.ProductName;
+            productEntity.Price = model.Price;
+            productEntity.Description = model.Description;
+            productEntity.ImageUrl = model.ImageUrl;
+            productEntity.CategoryId = model.CategoryId;
+            productEntity.AddedOn = addedOn;
+            await context.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<ProductViewModel>> GetAllProductsAsync(string userId)
             => await context.Products
@@ -81,5 +100,20 @@ namespace DeskMarket.Services
                 Price = p.Price,
             })
             .ToListAsync();
+
+        public async Task<ProductEditFormModel?> GetProductByIdAsync(int id)
+            => await context.Products
+            .Where(p => !p.IsDeleted && p.Id == id)
+            .Select(p => new ProductEditFormModel
+            {
+                SellerId = p.SellerId,
+                CategoryId = p.CategoryId,
+                ProductName = p.ProductName,
+                Description = p.Description,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                AddedOn = p.AddedOn.ToString(AddedOnFormat),
+            })
+            .FirstOrDefaultAsync();
     }
 }

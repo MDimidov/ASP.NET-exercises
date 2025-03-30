@@ -71,6 +71,49 @@ namespace DeskMarket.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            string userId = GetUserId();
+            ProductEditFormModel? model = await productService.GetProductByIdAsync(id);
+
+            if (model == null)
+            {
+                ModelState.AddModelError(nameof(model), "Invalid product");
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            if(model.SellerId != userId)
+            {
+                return Unauthorized();
+            }
+
+            model.Categories = await categoryService.GetAllForFormAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(ProductEditFormModel model, int id)
+        {
+            if (model.SellerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await categoryService.GetAllForFormAsync();
+                return View(model);
+            }
+
+            await productService.EditProductAsync(model, id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private string GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
