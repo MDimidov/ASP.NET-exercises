@@ -29,6 +29,19 @@ namespace TaskBoardApp.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task DeleteTaskByIdAsync(int id)
+        {
+            var entityTask = await context.Tasks.FindAsync(id);
+
+            if (entityTask == null)
+            {
+                throw new ArgumentException($"Invalid id: {id}");
+            }
+
+            context.Tasks.Remove(entityTask);
+            await context.SaveChangesAsync();
+        }
+
         public async Task EditTaskAsync(TaskFormModel model, int taskId, string userId)
         {
             var entityTask = await context.Tasks.FindAsync(taskId);
@@ -70,6 +83,26 @@ namespace TaskBoardApp.Services
                 Board = entity.Board!.Name,
                 CreatedOn = entity.CreatedOn?.ToString("dd-MM-yyyy HH:mm"),
                 Owner = entity.Owner.UserName!
+            };
+        }
+
+        public async Task<TaskViewModel> GetTaskDeleteByIdAsync(int id, string userId)
+        {
+            var entityTask = await context.Tasks
+                .Include(t => t.Owner)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (entityTask == null)
+            {
+                throw new ArgumentException($"Invalid id: {id}");
+            }
+
+            return new TaskViewModel()
+            {
+                Owner = entityTask.Owner.Id!,
+                Id = entityTask.Id,
+                Title = entityTask.Title,
+                Description = entityTask.Description,
             };
         }
 
