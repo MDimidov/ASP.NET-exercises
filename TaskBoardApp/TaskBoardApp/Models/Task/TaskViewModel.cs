@@ -18,6 +18,6 @@ namespace TaskBoardApp.Models.Task
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public string Owner { get; set; } = string.Empty;
+        public required string Owner { get; set; }
     }
 }

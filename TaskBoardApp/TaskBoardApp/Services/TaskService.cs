@@ -14,7 +14,7 @@ namespace TaskBoardApp.Services
             this.context = context;
         }
 
-        public async System.Threading.Tasks.Task CreateTaskAsync(TaskFormModel model, string userId)
+        public async Task CreateTaskAsync(TaskFormModel model, string userId)
         {
             Data.Models.Task entity = new()
             {
@@ -26,6 +26,27 @@ namespace TaskBoardApp.Services
             };
 
             await context.Tasks.AddAsync(entity);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task EditTaskAsync(TaskFormModel model, int taskId, string userId)
+        {
+            var entityTask = await context.Tasks.FindAsync(taskId);
+
+            if (entityTask == null)
+            {
+                throw new ArgumentException($"Invalid id: {taskId}");
+            }
+
+            if (entityTask.OwnerId != userId)
+            {
+                throw new UnauthorizedAccessException(entityTask.OwnerId);
+            }
+
+            entityTask.Title = model.Title;
+            entityTask.Description = model.Description;
+            entityTask.BoardId = model.BoardId;
+
             await context.SaveChangesAsync();
         }
 
@@ -49,6 +70,29 @@ namespace TaskBoardApp.Services
                 Board = entity.Board!.Name,
                 CreatedOn = entity.CreatedOn?.ToString("dd-MM-yyyy HH:mm"),
                 Owner = entity.Owner.UserName!
+            };
+        }
+
+        public async Task<TaskFormModel> GetTaskFormById(int id, string userId)
+        {
+            var entityTask = await context.Tasks
+                .FindAsync(id);
+
+            if (entityTask == null)
+            {
+                throw new ArgumentException($"Invalid id: {id}");
+            }
+
+            if (entityTask.OwnerId != userId)
+            {
+                throw new UnauthorizedAccessException(entityTask.OwnerId);
+            }
+
+            return new TaskFormModel()
+            {
+                Title = entityTask.Title,
+                Description = entityTask.Description,
+                BoardId = entityTask.BoardId,
             };
         }
     }

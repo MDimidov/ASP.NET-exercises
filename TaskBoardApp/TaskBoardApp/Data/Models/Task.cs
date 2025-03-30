@@ -27,7 +27,7 @@ namespace TaskBoardApp.Data.Models
         public DateTime? CreatedOn { get; set; } // = DateTime.Now;
 
         [Comment($"Board identifier")]
-        public int? BoardId { get; set; }
+        public int BoardId { get; set; }
 
         [DeleteBehavior(DeleteBehavior.Restrict)]
         public virtual Board? Board { get; set; }

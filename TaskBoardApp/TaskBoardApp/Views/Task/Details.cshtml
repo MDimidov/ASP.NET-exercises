@@ -16,7 +16,7 @@
             <p class="card-text"><span class="fw-bold">Board: </span>@Model.Board</p>
             <p class="card-text"><span class="fw-bold">Owner: </span>@Model.Owner</p>
             <p class="card-text"><span class="fw-bold">Created on: </span>@Model.CreatedOn</p>
-            @if (Model.Owner == User.Identity.Name)
+            @if (Model.Owner == User.Identity!.Name)
             {
                 <tr class="actions">
                     <th><span class="fw-bold">Actions:</span></th>
