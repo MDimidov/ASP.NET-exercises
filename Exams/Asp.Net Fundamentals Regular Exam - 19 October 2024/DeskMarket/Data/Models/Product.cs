@@ -41,7 +41,7 @@ namespace DeskMarket.Data.Models
         [Required]
         [DeleteBehavior(DeleteBehavior.Restrict)]
         [ForeignKey(nameof(SellerId))]
-        public virtual required IdentityUser Seller { get; set; }
+        public virtual IdentityUser Seller { get; set; } = null!;
 
         [Required]
         [Comment($"{nameof(Product)} date of creation")]
@@ -54,7 +54,7 @@ namespace DeskMarket.Data.Models
         [Required]
         [ForeignKey(nameof(CategoryId))]
         [DeleteBehavior(DeleteBehavior.Restrict)]
-        public virtual required Category Category { get; set; }
+        public virtual Category Category { get; set; } = null!;
 
         [Required]
         [Comment($"{nameof(Product)} is deleted")]

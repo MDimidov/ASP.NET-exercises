@@ -9,17 +9,54 @@ namespace DeskMarket.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService productService;
+        private readonly ICategoryService categoryService;
 
-        public ProductController(IProductService productService)
+        public ProductController(
+            IProductService productService,
+            ICategoryService categoryService)
         {
             this.productService = productService;
+            this.categoryService = categoryService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             IEnumerable<ProductViewModel> model = await productService.GetAllProductsAsync(GetUserId());
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            ProductAddFormModel model = new();
+            model.Categories = await categoryService.GetAllForFormAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(ProductAddFormModel model)
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await categoryService.GetAllForFormAsync();
+                return View(model);
+            }
+
+            await productService.AddProductAsync(model, GetUserId());
+            return RedirectToAction(nameof(Index));
         }
 
         private string GetUserId()

@@ -1,7 +1,10 @@
 ﻿using DeskMarket.Contracts;
 using DeskMarket.Data;
+using DeskMarket.Data.Models;
 using DeskMarket.Models.Product;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using static DeskMarket.Common.DataConstants.Product;
 
 namespace DeskMarket.Services
 {
@@ -12,6 +15,25 @@ namespace DeskMarket.Services
         public ProductService(ApplicationDbContext context)
         {
             this.context = context;
+        }
+
+        public async Task AddProductAsync(ProductAddFormModel model, string userId)
+        {
+            DateTime.TryParseExact(model.AddedOn, AddedOnFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime addedOn);
+
+            Product productToAdd = new()
+            {
+                ProductName = model.ProductName,
+                Price = model.Price,
+                SellerId = userId,
+                AddedOn = addedOn,
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+            };
+
+            await context.Products.AddAsync(productToAdd);
+            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ProductViewModel>> GetAllProductsAsync(string userId)

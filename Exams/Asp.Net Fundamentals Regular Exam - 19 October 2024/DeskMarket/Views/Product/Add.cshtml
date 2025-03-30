@@ -1,4 +1,6 @@
-﻿@* @{
+﻿@using DeskMarket.Models.Product
+@model ProductAddFormModel
+@{
     ViewData["Title"] = "Add Product";
     var today = DateTime.Now.ToString("dd-MM-yyyy");
 }
@@ -59,4 +61,8 @@
             </div>
         </form>
     </div>
-</div> *@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

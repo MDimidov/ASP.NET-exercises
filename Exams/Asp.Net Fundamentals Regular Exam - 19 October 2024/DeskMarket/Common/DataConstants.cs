@@ -14,7 +14,7 @@
 
             // Price
             public const string PriceMinRange = "1.0";
-            public const string PriceMaxRange = "3_000.0";
+            public const string PriceMaxRange = "3000.0";
 
             // AddedOn Format
             public const string AddedOnFormat = "dd-MM-yyyy";
