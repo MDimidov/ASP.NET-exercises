@@ -2,6 +2,7 @@
 using TaskBoardApp.Contracts;
 using TaskBoardApp.Data;
 using TaskBoardApp.Models.Board;
+using TaskBoardApp.Models.Home;
 using TaskBoardApp.Models.Task;
 
 namespace TaskBoardApp.Services
@@ -36,5 +37,35 @@ namespace TaskBoardApp.Services
                 .AsNoTracking()
                 .Select(b => new TaskBoardModel { Id = b.Id, Name = b.Name, })
                 .ToListAsync();
+
+        public async Task<HomeViewModel> GetTasksCountAsync(string userId)
+        {
+
+            var boards = await context.Boards
+                .Select(b => b.Name)
+                .Distinct()
+                .ToListAsync();
+
+            var tasksCount = new List<HomeBoardModel>();
+            foreach (var board in boards)
+            {
+                int tasksInBoard = await context.Tasks
+                    .Where(t => t.Board!.Name == board)
+                    .CountAsync();
+
+                tasksCount.Add(new HomeBoardModel
+                {
+                    BoardName = board,
+                    TasksCount = tasksInBoard
+                });
+            }
+
+            return new HomeViewModel
+            {
+                AllTasksCount = await context.Tasks.CountAsync(),
+                UserTasksCount = context.Tasks.Where(t => t.OwnerId == userId).Count(),
+                BoardsWithTasksCount = tasksCount
+            };
+        }
     }
 }
