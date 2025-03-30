@@ -115,5 +115,31 @@ namespace DeskMarket.Services
                 AddedOn = p.AddedOn.ToString(AddedOnFormat),
             })
             .FirstOrDefaultAsync();
+
+        public async Task<ProductDetailsViewModel> GetProductDetailsByIdAsync(int id)
+        {
+            var model = await context.Products
+                .Where(p => p.Id == id && !p.IsDeleted)
+                .Select(p => new ProductDetailsViewModel
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    AddedOn = p.AddedOn.ToString(AddedOnFormat),
+                    CategoryName = p.Category.Name,
+                    Seller = p.Seller.UserName!,
+                    HasBought = p.ProductsClients.Any(pc => pc.ProductId == id),
+                })
+                .FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                throw new ArgumentException($"No such a product with id: {id}");
+            }
+
+            return model;
+        }
     }
 }

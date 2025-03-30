@@ -114,6 +114,14 @@ namespace DeskMarket.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            ProductDetailsViewModel model = await productService.GetProductDetailsByIdAsync(id);
+
+            return View(model);
+        }
+
         private string GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
