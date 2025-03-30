@@ -21,14 +21,14 @@ namespace DeskMarket.Data
                 p.ProductId,
             });
 
-            //builder
-            //    .Entity<Category>()
-            //    .HasData(
-            //        new Category { Id = 1, Name = "Laptops" },
-            //        new Category { Id = 2, Name = "Workstations" },
-            //        new Category { Id = 3, Name = "Accessories" },
-            //        new Category { Id = 4, Name = "Desktops" },
-            //        new Category { Id = 5, Name = "Monitors" });
+            builder
+                .Entity<Category>()
+                .HasData(
+                    new Category { Id = 1, Name = "Laptops" },
+                    new Category { Id = 2, Name = "Workstations" },
+                    new Category { Id = 3, Name = "Accessories" },
+                    new Category { Id = 4, Name = "Desktops" },
+                    new Category { Id = 5, Name = "Monitors" });
         }
 
         public virtual DbSet<Product> Products { get; set; }
