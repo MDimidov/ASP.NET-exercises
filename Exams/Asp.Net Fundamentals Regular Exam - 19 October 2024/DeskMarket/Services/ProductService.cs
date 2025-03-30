@@ -53,6 +53,19 @@ namespace DeskMarket.Services
             }
         }
 
+        public async Task DeleteProductByIdAsync(int id, string userId)
+        {
+            Product? productEntity = await context.Products.FirstOrDefaultAsync(p => p.Id == id && p.SellerId == userId);
+
+            if (productEntity == null)
+            {
+                throw new ArgumentException($"No such a product");
+            }
+
+            productEntity.IsDeleted = true;
+            await context.SaveChangesAsync();
+        }
+
         public async Task EditProductAsync(ProductEditFormModel model, int productId)
         {
             Product? productEntity = await context.Products.FindAsync(productId);
@@ -131,6 +144,27 @@ namespace DeskMarket.Services
                     CategoryName = p.Category.Name,
                     Seller = p.Seller.UserName!,
                     HasBought = p.ProductsClients.Any(pc => pc.ProductId == id),
+                })
+                .FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                throw new ArgumentException($"No such a product with id: {id}");
+            }
+
+            return model;
+        }
+
+        public async Task<ProductDeleteViewModel> GetProductToDeleteByIdAsync(int id)
+        {
+            ProductDeleteViewModel? model = await context.Products
+                .Where(p => p.Id == id && !p.IsDeleted)
+                .Select(p => new ProductDeleteViewModel
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    Seller = p.Seller.UserName!,
+                    SellerId = p.SellerId,
                 })
                 .FirstOrDefaultAsync();
 

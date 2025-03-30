@@ -131,6 +131,42 @@ namespace DeskMarket.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await productService.GetProductToDeleteByIdAsync(id);
+
+            if (model == null)
+            {
+                ModelState.AddModelError(nameof(model), "Invalid product");
+
+                return RedirectToAction(nameof(Index));
+            }
+
+
+            if(model.SellerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, ProductDeleteViewModel model)
+        {
+            if (model.SellerId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            await productService.DeleteProductByIdAsync(id, GetUserId());
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private string GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;

@@ -6,11 +6,13 @@ namespace DeskMarket.Contracts
     {
         Task AddProductAsync(ProductAddFormModel model, string userId);
         Task AddProductToCardAsync(int id, string userId);
+        Task DeleteProductByIdAsync(int id, string userId);
         Task EditProductAsync(ProductEditFormModel model, int productId);
         Task<IEnumerable<ProductViewModel>> GetAllProductsAsync(string userId);
         Task<IEnumerable<ProductCartViewModel>> GetCartProductByUserIdAsync(string userId);
         Task<ProductEditFormModel?> GetProductByIdAsync(int id);
         Task<ProductDetailsViewModel> GetProductDetailsByIdAsync(int id);
+        Task<ProductDeleteViewModel> GetProductToDeleteByIdAsync(int id);
         Task RemoveProductFromCardAsync(int id, string userId);
     }
 }
