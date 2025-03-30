@@ -27,6 +27,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.LoginPath = "/Identity/Account/Login";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
