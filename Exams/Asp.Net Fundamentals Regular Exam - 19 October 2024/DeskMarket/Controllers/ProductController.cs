@@ -1,5 +1,6 @@
 ﻿using DeskMarket.Contracts;
 using DeskMarket.Models.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -28,12 +29,9 @@ namespace DeskMarket.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Add()
         {
-            if (!User.Identity!.IsAuthenticated)
-            {
-                return Unauthorized();
-            }
 
             ProductAddFormModel model = new();
             model.Categories = await categoryService.GetAllForFormAsync();
@@ -42,12 +40,9 @@ namespace DeskMarket.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Add(ProductAddFormModel model)
         {
-            if (!User.Identity!.IsAuthenticated)
-            {
-                return Unauthorized();
-            }
 
             if (!ModelState.IsValid)
             {
@@ -57,6 +52,23 @@ namespace DeskMarket.Controllers
 
             await productService.AddProductAsync(model, GetUserId());
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddToCart(int id)
+        {
+            await productService.AddProductToCardAsync(id, GetUserId());
+
+            return RedirectToAction(nameof(Cart));
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Cart()
+        {
+            IEnumerable<ProductCartViewModel> model = await productService.GetCartProductByUserIdAsync(GetUserId());
+            return View(model);
         }
 
         private string GetUserId()

@@ -6,8 +6,13 @@ namespace DeskMarket.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Product");
+            }
+
             return View();
         }
 

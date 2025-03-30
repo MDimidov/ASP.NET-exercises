@@ -36,8 +36,28 @@ namespace DeskMarket.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task AddProductToCardAsync(int id, string userId)
+        {
+            ProductClient? productClientCheck = await context.ProductClients.FirstOrDefaultAsync(pc => pc.ProductId == id && pc.ClientId == userId);
+
+            if (productClientCheck == null)
+            {
+                ProductClient productClient = new()
+                {
+                    ProductId = id,
+                    ClientId = userId,
+                };
+
+                await context.ProductClients.AddAsync(productClient);
+                await context.SaveChangesAsync();
+            }
+        }
+
+
+
         public async Task<IEnumerable<ProductViewModel>> GetAllProductsAsync(string userId)
             => await context.Products
+                .Where(p => !p.IsDeleted)
                 .Select(p => new ProductViewModel()
                 {
                     Id = p.Id,
@@ -48,5 +68,18 @@ namespace DeskMarket.Services
                     HasBought = p.ProductsClients.Any(pc => pc.ClientId == userId),
                 })
                 .ToListAsync();
+
+        public async Task<IEnumerable<ProductCartViewModel>> GetCartProductByUserIdAsync(string userId)
+            => await context.Products
+            .Where(p => p.SellerId != userId && !p.IsDeleted &&
+                p.ProductsClients.Any(pc => pc.ClientId == userId))
+            .Select(p => new ProductCartViewModel
+            {
+                Id = p.Id,
+                ProductName = p.ProductName,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+            })
+            .ToListAsync();
     }
 }
