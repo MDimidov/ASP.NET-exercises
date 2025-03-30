@@ -141,5 +141,18 @@ namespace DeskMarket.Services
 
             return model;
         }
+
+        public async Task RemoveProductFromCardAsync(int id, string userId)
+        {
+            ProductClient? productClient = await context.ProductClients.FirstOrDefaultAsync(pc => pc.ProductId == id && pc.ClientId == userId);
+
+            if (productClient == null)
+            {
+                throw new ArgumentException($"No such a cart product with id: {id}");
+            }
+
+            context.ProductClients.Remove(productClient);
+            await context.SaveChangesAsync();
+        }
     }
 }

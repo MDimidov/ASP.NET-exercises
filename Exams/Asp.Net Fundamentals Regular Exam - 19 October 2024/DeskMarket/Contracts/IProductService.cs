@@ -11,5 +11,6 @@ namespace DeskMarket.Contracts
         Task<IEnumerable<ProductCartViewModel>> GetCartProductByUserIdAsync(string userId);
         Task<ProductEditFormModel?> GetProductByIdAsync(int id);
         Task<ProductDetailsViewModel> GetProductDetailsByIdAsync(int id);
+        Task RemoveProductFromCardAsync(int id, string userId);
     }
 }

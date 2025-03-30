@@ -63,6 +63,15 @@ namespace DeskMarket.Controllers
             return RedirectToAction(nameof(Cart));
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveFromCart(int id)
+        {
+            await productService.RemoveProductFromCardAsync(id, GetUserId());
+
+            return RedirectToAction(nameof(Cart));
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Cart()
