@@ -23,7 +23,7 @@ namespace DeskMarket.Models.Product
 
         [Display(Name = "Added On")]
         [Required(ErrorMessage = ErrorMessage.Required)]
-        public string AddedOn = DateTime.UtcNow.ToString(ProductConst.AddedOnFormat);
+        public string AddedOn { get; set; } = DateTime.UtcNow.ToString(ProductConst.AddedOnFormat);
 
         [Required]
         public int CategoryId { get; set; }

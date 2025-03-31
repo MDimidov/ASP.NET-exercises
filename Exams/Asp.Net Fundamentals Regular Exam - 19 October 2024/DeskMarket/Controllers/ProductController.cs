@@ -23,6 +23,10 @@ namespace DeskMarket.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             IEnumerable<ProductViewModel> model = await productService.GetAllProductsAsync(GetUserId());
 
             return View(model);

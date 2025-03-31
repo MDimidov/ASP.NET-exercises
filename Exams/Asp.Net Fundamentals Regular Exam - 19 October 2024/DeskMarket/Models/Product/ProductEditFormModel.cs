@@ -2,6 +2,6 @@
 {
     public class ProductEditFormModel : ProductAddFormModel
     {
-        public required string SellerId;
+        public required string SellerId { get; set; }
     }
 }
