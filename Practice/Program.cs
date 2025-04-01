@@ -1,10 +1,15 @@
 using Practice.Contracts;
+using Practice.ModelBinders;
 using Practice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(opt =>
+{
+    opt.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+});
+
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 

@@ -32,6 +32,13 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult GetNumber(decimal price)
+    {
+        string result = price.ToString();
+        return Content(result);
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
