@@ -13,8 +13,8 @@
             public const int DescriptionMaxLength = 250;
 
             // Price
-            public const string PriceMinRange = "1.0";
-            public const string PriceMaxRange = "3000.0";
+            public const string PriceMinRange = "1.00";
+            public const string PriceMaxRange = "4000.00";
 
             // AddedOn Format
             public const string AddedOnFormat = "dd-MM-yyyy";
