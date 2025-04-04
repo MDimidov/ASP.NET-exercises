@@ -39,6 +39,12 @@ public class HomeController : Controller
         return Content(result);
     }
 
+    [HttpGet]
+    public IActionResult CheckDate(string dateInput)
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
