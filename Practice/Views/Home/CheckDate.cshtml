@@ -12,15 +12,30 @@
     <p>This is the @ViewBag.Title .</p>
 </section>
 
+<div asp-validation-summary="All" class="text-danger"></div>
 <form asp-action="CheckDate" method="post">
     <div>
+        <label asp-for="CheckDate">Check Date</label>
         <input type="date" asp-for="CheckDate" />
         <span asp-validation-for="CheckDate" class="text-danger"></span>
     </div>
 
     <div>
+        <label asp-for="BirthDate">Birth Date</label>
         <input type="date" asp-for="BirthDate" />
         <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Name">Name</label>
+        <input type="text" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Country">Country</label>
+        <input type="text" asp-for="Country" />
+        <span asp-validation-for="Country" class="text-danger"></span>
     </div>
     <button type="submit">Check Date</button>
 </form>
