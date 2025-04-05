@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Upload file/s";
+}
+
+
+<h1>@ViewBag.Title</h1>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
+    <input type="file" name="files" multiple>
+    <button type="submit">Upload</button>
+</form> 
