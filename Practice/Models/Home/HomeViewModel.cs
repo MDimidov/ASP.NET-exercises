@@ -10,7 +10,7 @@ namespace Practice.Models.Home
         public DateTime CheckDate { get; set; }
 
         [Required]
-        [IsAdult(ErrorMessage = "You must be at least 18 years old")]
+        [IsAdult(2, ErrorMessage = "You must be at least 2 years old")]
         public DateTime BirthDate { get; set; }
     }
 }
