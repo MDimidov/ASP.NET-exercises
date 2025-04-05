@@ -8,7 +8,7 @@ namespace Practice.ValidationAttributes
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value != null && (DateTime)value < minimumAge)
+            if (value != null && (DateTime)value >= minimumAge)
             {
                 return new ValidationResult(ErrorMessage);
             }

@@ -13,8 +13,15 @@
 </section>
 
 <form asp-action="CheckDate" method="post">
-    <input type="date" asp-for="BirthDate" />
-    <span asp-validation-for="BirthDate" class="text-danger"></span>
+    <div>
+        <input type="date" asp-for="CheckDate" />
+        <span asp-validation-for="CheckDate" class="text-danger"></span>
+    </div>
+
+    <div>
+        <input type="date" asp-for="BirthDate" />
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
     <button type="submit">Check Date</button>
 </form>
 
