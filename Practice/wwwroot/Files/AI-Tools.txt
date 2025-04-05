@@ -1,0 +1,90 @@
+deepl.com - Подходящ за преводи
+chatGPT - анализиране на данни от таблици
+claude.ai - анализиране на данни от таблици
+perplexity.ai - AI търсачка
+create.xyz - Създаване на работещи приложения с prompt
+bolt.new - Създаване на работещи приложения с prompt
+
+------------------------------------------------------------------------------------
+CS 1.6 - Fattall-error
+
+45.144.155.172:27027
+CONSOLE : https://my.qgs.bg/index.php/login
+
+koko920423@abv.bg
+ pass: ws|GbS%JW,() 
+
+
+
+MY ADMIN  https://db-srv.qgs.bg/
+USERNAME: u3081_NHPs0sG31R
+PASSWORD: 4zInxn^C!THhA@ef41pdZa!C 
+
+
+https://www.servers.fatall-error.info/2837d912dj189ey2wij982198ud912j.php vip paroli
+
+FTP client
+
+FTP host:     sftp://s2-sof1.gameserver.center
+FTP username:     zqq9mkp2.f0da3374
+FTP password:     ws|GbS%JW,()
+FTP port:    2022
+------------------------------------------------------------------------------------
+
+Andorid cmd: adb shell rm /data/system/gesture.key
+
+
+**DressUp Web**
+- Уеб приложение за управление на модни колекции. 
+- Функционалности: създаване на потребителски акаунти, добавяне/редактиране на артикули, добавяне/редактиране на магазини, интерактивен интерфейс за търсене и филтриране, Admin area с различна начална страница.
+- Използвани технологии: ASP.NET Core, Entity Framework Core, Microsoft SQL Server, Bootstrap, Java Script
+- Предизвикателства: 
+	1. Внедряване на пагинация спрямо избран брой от потребителя продукти за страница
+	2. Добавяне на Toastr library for Gnome / Growl type non-blocking notifications.
+
+
+
+2. Projects
+DressUp Web
+
+A web application for managing fashion collections.
+Features: User account creation, adding/editing items, adding/editing stores, interactive search and filtering interface, admin panel with a customized homepage.
+Technologies used: ASP.NET Core, Entity Framework Core, Microsoft SQL Server, Bootstrap.
+Challenges: Implementing pagination based on the user-selected number of products per page.
+
+------------------
+
+Soft Skills
+- **Екипна работа:** Работех на кораб и за да може всичко да върви гладко, екипната работа е задължителна. Имам голям опит в това да работя в екип.
+- **Управление на времето:** Спазвах срокове и приоритизирах задачи по време на университетски проекти, курсови задачи и най-вече в работата ми.
+- **Адаптивност:** Успях да уча в SoftUni и да предавам проектите си навреме, въпреки че бях на кораб и в голяма част от времето нямах интернет или имах работа.
+
+4. Soft Skills
+Soft Skills
+
+Teamwork: While working onboard a ship, teamwork was essential to ensure smooth operations. I have extensive experience collaborating effectively in a team environment.
+Time Management: Successfully met deadlines and prioritized tasks during university projects, coursework, and in my professional work.
+Adaptability: Managed to attend courses at SoftUni and submit projects on time despite working on a ship, often without internet access or with a demanding work schedule.
+
+
+5 3 4
+3 2 1 1 1
+4 3 2
+1 1 4 1
+
+
+
+
+
+docker run --name cs16-server -p 27016:27016/udp -p 27016:27016 -p 81:81 archont94/counter-strike1.6:latest
+
+docker build --tag 'counter-strike' .
+docker run --detach 'counter-strike'
+
+
+
+chat.ai.user.gpt@gmail.com
+Chat_user_AI-2025
+
+
+0898660035 - Радо

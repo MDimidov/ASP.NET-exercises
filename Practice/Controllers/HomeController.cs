@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Practice.Models;
 using Practice.Models.Home;
 
@@ -83,6 +84,21 @@ public class HomeController : Controller
         {
             savedFileLength = files.Sum(f => f.Length)
         });
+    }
+
+    [HttpGet]
+    public IActionResult Download(string filename)
+    {
+        string path = Path.Combine(Environment.CurrentDirectory, "wwwroot", "Files");
+
+        IFileProvider fileProvider = new PhysicalFileProvider(path);
+        IFileInfo fileInfo = fileProvider.GetFileInfo(filename);
+        var stream = fileInfo.CreateReadStream();
+        var mimeType = "application/octet-stream";
+
+        return File(stream, mimeType, filename);
+
+
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
