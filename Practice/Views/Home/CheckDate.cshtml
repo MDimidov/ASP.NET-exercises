@@ -1,0 +1,23 @@
+﻿@using Practice.Models.Home
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Check Date";
+    ViewBag.Message = "Check date input";
+    DateTime date = DateTime.Now;
+}
+
+<section>
+    <h2>@ViewBag.Title</h2>
+    <h3>@ViewBag.Message</h3>
+    <p>This is the @ViewBag.Title .</p>
+</section>
+
+<form asp-action="CheckDate" method="post">
+    <input type="date" asp-for="BirthDate" />
+    <span asp-validation-for="BirthDate" class="text-danger"></span>
+    <button type="submit">Check Date</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Practice.Models;
+using Practice.Models.Home;
 
 namespace Practice.Controllers;
 
@@ -40,8 +41,18 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult CheckDate(string dateInput)
+    public IActionResult CheckDate()
     {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult CheckDate(HomeViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         return View();
     }
 
