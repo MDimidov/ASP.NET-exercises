@@ -2,7 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationSerivces();
 builder.Services.AddIdentityServiceExtension();
-builder.Services.AddDbServiceExtension(builder);
+builder.Services.AddDbServiceExtension(builder.Configuration);
 
 builder.Services.AddControllersWithViews();
 
