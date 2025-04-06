@@ -23,6 +23,7 @@ namespace HouseRentingSystem.Infrastructure.Data.Models
         public required string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
+        [DeleteBehavior(DeleteBehavior.Restrict)]
         public virtual IdentityUser User { get; set; } = null!;
     }
 }
