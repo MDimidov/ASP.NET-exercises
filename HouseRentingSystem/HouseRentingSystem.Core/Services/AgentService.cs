@@ -36,6 +36,24 @@ namespace HouseRentingSystem.Core.Services
             }
         }
 
+        public async Task<int> GetAgentIdByUserId(string userId)
+        {
+            try
+            {
+                int agentId = await context.Agents
+                    .AsNoTracking()
+                    .Where(a => a.UserId == userId)
+                    .Select(a => a.Id)
+                    .FirstOrDefaultAsync();
+
+                return agentId;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public async Task<bool> IsExistByIdAsync(string userId)
             => await context.Agents.AnyAsync(a => a.UserId == userId);
 

@@ -6,5 +6,6 @@
         Task<bool> IsExistByPhoneNumberAsync(string phoneNumber);
         Task<bool> IsUserHasRentsAsync(string userId);
         Task<bool> CreateAsync(string userId, string phoneNumber);
+        Task<int> GetAgentIdByUserId(string userId);
     }
 }
