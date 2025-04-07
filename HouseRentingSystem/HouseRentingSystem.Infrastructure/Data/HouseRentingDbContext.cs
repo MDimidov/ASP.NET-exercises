@@ -16,9 +16,11 @@ namespace HouseRentingSystem.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new IdentityUserConfiguration());
-            builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new AgentConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new HouseConfiguration());
+
+            base.OnModelCreating(builder);
         }
 
         public virtual DbSet<Agent> Agents { get; set; }
