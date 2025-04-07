@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HouseRentingSystem.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(HouseRentingDbContext))]
     [Migration("20250406125746_InitialMigration")]
     partial class InitialMigration
     {

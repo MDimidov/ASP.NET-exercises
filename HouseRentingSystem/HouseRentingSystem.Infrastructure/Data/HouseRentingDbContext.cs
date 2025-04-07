@@ -1,4 +1,5 @@
 ﻿using HouseRentingSystem.Infrastructure.Data.Models;
+using HouseRentingSystem.Infrastructure.Data.SeedData;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,14 @@ namespace HouseRentingSystem.Infrastructure
             : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new IdentityUserConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new AgentConfiguration());
+            builder.ApplyConfiguration(new HouseConfiguration());
         }
 
         public virtual DbSet<Agent> Agents { get; set; }
