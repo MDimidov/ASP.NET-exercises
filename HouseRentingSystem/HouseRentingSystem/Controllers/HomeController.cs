@@ -1,7 +1,5 @@
 using HouseRentingSystem.Core.Contracts;
-using HouseRentingSystem.Core.Models.Home;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace HouseRentingSystem.Controllers
 {
