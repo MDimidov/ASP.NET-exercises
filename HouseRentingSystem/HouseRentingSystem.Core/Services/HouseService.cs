@@ -264,5 +264,22 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task<bool> IsRentedByIdAsync(int houseId)
             => await context.Houses.AnyAsync(h => h.RenterId != null && h.Id == houseId);
+
+        public async Task<bool> IsUserRentHouseByIdAsync(string userId, int houseId)
+            => await context.Houses.AnyAsync(h => h.RenterId == userId && h.Id == houseId);
+
+        public async Task<bool> LeaveHouseAsync(int houseId)
+        {
+            House? houseEntity = await context.Houses.FindAsync(houseId);
+
+            if (houseEntity == null)
+            {
+                return false;
+            }
+
+            houseEntity.RenterId = null;
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }
