@@ -1,4 +1,5 @@
 ﻿using HouseRentingSystem.Core.Contracts;
+using HouseRentingSystem.Core.Enums;
 using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Data.Models;
@@ -66,6 +67,78 @@ namespace HouseRentingSystem.Core.Services
             {
                 throw new ArgumentException("Failed to add House");
             }
+        }
+
+        public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
+            => await context.Categories
+                .AsNoTracking()
+                .Select(c => c.Name)
+                .Distinct()
+                .ToArrayAsync();
+
+        public async Task<HouseQueryServiceModel> AllQueryableAsync(
+            string? category, 
+            string? searchTerm, 
+            HouseSorting sorting, 
+            int currentPage, 
+            int housesPerPage)
+        {
+            IQueryable<House> housesQuery = context
+                .Houses
+                .Include(h => h.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                housesQuery = housesQuery
+                    .Where(h => h.Category.Name == category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                housesQuery = housesQuery
+                    .Where(h =>
+                        h.Title.ToLower().Contains(searchTerm.ToLower()) ||
+                        h.Address.ToLower().Contains(searchTerm.ToLower()) ||
+                        h.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            housesQuery = sorting switch
+            {
+                HouseSorting.Oldest => housesQuery
+                    .OrderBy(h => h.Id),
+                HouseSorting.PriceAscending => housesQuery
+                    .OrderBy (h => h.PricePerMonth),
+                HouseSorting.PriceDescending => housesQuery
+                    .OrderBy(h => h.PricePerMonth),
+                HouseSorting.NotRentedFirst => housesQuery
+                    .OrderBy(h => h.RenterId != null)
+                    .ThenByDescending(h => h.Id),
+                _ => housesQuery.OrderByDescending(h => h.Id),
+            };
+
+            var houses  = await housesQuery
+                .AsNoTracking()
+                .Skip((currentPage - 1) * housesPerPage)
+                .Take(housesPerPage)
+                .Select(h => new HouseServiceModel
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    IsRented = h.RenterId != null,
+                })
+                .ToListAsync();
+
+            int totalHousesCount = housesQuery.Count();
+
+            return new HouseQueryServiceModel()
+            {
+                TotalHousesCount = totalHousesCount,
+                Houses = houses,
+            };
         }
     }
 }

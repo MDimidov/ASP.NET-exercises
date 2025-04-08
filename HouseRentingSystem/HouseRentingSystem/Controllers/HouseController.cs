@@ -22,11 +22,23 @@ namespace HouseRentingSystem.Controllers
             this.agentService = agentService;
         }
 
-        [HttpGet]
+        [HttpGet, HttpPost]
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromQuery]AllHousesQueryModel query)
         {
-            return View(new AllHousesQueryModel());
+            HouseQueryServiceModel queryResult = await houseService.AllQueryableAsync(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllHousesQueryModel.HousesPerPage);
+
+            query.TotalHousesCount = queryResult.TotalHousesCount;
+            query.Houses = queryResult.Houses;
+
+            query.Categories = await houseService.GetCategoriesNamesAsync();
+
+            return View(query);
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
-﻿using HouseRentingSystem.Core.Models.House;
+﻿using HouseRentingSystem.Core.Enums;
+using HouseRentingSystem.Core.Models.House;
 
 namespace HouseRentingSystem.Core.Contracts
 {
@@ -9,5 +10,12 @@ namespace HouseRentingSystem.Core.Contracts
         Task<IEnumerable<HouseCategoryServiceModel>> GetAllCategoriesAsync();
         Task<int> AddHouseAsync(HouseFormModel houseModel, int agentId);
         Task<bool> IsCategoryExistByIdAsync(int categoryId);
+        Task<IEnumerable<string>> GetCategoriesNamesAsync();
+        Task<HouseQueryServiceModel> AllQueryableAsync(
+            string? category = null,
+            string? searchTerm = null,
+            HouseSorting sorting = HouseSorting.Newest,
+            int currentPage = 1,
+            int housesPerPage = 1);
     }
 }
