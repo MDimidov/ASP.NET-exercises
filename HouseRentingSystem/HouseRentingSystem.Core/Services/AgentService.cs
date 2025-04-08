@@ -36,7 +36,7 @@ namespace HouseRentingSystem.Core.Services
             }
         }
 
-        public async Task<int> GetAgentIdByUserId(string userId)
+        public async Task<int> GetAgentIdByUserIdAsync(string userId)
         {
             try
             {

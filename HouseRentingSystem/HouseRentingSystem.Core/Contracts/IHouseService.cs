@@ -18,5 +18,7 @@ namespace HouseRentingSystem.Core.Contracts
             int currentPage = 1,
             int housesPerPage = 1);
         Task<HouseDetailsViewModel?> GetHouseDetailsByIdAsync(int houseId);
+        Task<IEnumerable<HouseServiceModel>> GetMineHousesByAgentIdAsync(int agentId);
+        Task<IEnumerable<HouseServiceModel>> GetMineHousesByUserIdAsync(string userId);
     }
 }

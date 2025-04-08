@@ -163,5 +163,35 @@ namespace HouseRentingSystem.Core.Services
                     }
                 })
                 .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<HouseServiceModel>> GetMineHousesByAgentIdAsync(int agentId)
+            => await context.Houses
+                .AsNoTracking()
+                .Where(h => h.AgentId == agentId)
+                .Select(h => new HouseServiceModel
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    IsRented = h.RenterId != null,
+                })
+                .ToArrayAsync();
+
+        public async Task<IEnumerable<HouseServiceModel>> GetMineHousesByUserIdAsync(string userId)
+            => await context.Houses
+                .AsNoTracking()
+                .Where(h => h.RenterId == userId)
+                .Select(h => new HouseServiceModel
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    IsRented = h.RenterId != null,
+                })
+                .ToArrayAsync();
     }
 }
