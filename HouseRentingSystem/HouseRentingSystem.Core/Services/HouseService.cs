@@ -233,5 +233,19 @@ namespace HouseRentingSystem.Core.Services
                 CategoryId = h.CategoryId,
             })
             .FirstAsync();
+
+        public async Task<bool> DeleteHouseByIdAsync(int houseId)
+        {
+            House? houseEntity = await context.Houses.FindAsync(houseId);
+
+            if(houseEntity == null)
+            {
+                return false;
+            }
+
+            context.Houses.Remove(houseEntity);
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }

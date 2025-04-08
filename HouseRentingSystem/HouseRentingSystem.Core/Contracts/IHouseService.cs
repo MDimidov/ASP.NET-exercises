@@ -24,5 +24,6 @@ namespace HouseRentingSystem.Core.Contracts
         Task<bool> IsHouseExistById(int houseId);
         Task<bool> IsUserOwnerByIdAsync(string userId, int houseId);
         Task<HouseFormModel> GetHouseForEditAsync(int houseId);
+        Task<bool> DeleteHouseByIdAsync(int houseId);
     }
 }

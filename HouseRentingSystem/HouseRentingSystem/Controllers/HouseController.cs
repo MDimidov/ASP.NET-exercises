@@ -174,14 +174,49 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View(new HouseDeleteViewModel());
+            string userId = User.Id();
+            if (!await agentService.IsExistByIdAsync(userId))
+            {
+                return RedirectToAction(nameof(AgentController.Become), "Agent");
+            }
+
+            HouseDetailsViewModel? model = await houseService.GetHouseDetailsByIdAsync(id);
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            if (!await houseService.IsUserOwnerByIdAsync(userId, id))
+            {
+                return Unauthorized();
+            }
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Delete(HouseDeleteViewModel model)
+        public async Task<IActionResult> Delete(int id, HouseDetailsViewModel model)
         {
+            string userId = User.Id();
+            if (!await agentService.IsExistByIdAsync(userId))
+            {
+                return RedirectToAction(nameof(AgentController.Become), "Agent");
+            }
+
+            if (!await houseService.IsHouseExistById(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await houseService.IsUserOwnerByIdAsync(userId, id))
+            {
+                return Unauthorized();
+            }
+
+            await houseService.DeleteHouseByIdAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
 
