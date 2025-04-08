@@ -24,7 +24,7 @@ namespace HouseRentingSystem.Controllers
 
         [HttpGet, HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Index([FromQuery]AllHousesQueryModel query)
+        public async Task<IActionResult> Index([FromQuery] AllHousesQueryModel query)
         {
             HouseQueryServiceModel queryResult = await houseService.AllQueryableAsync(
                 query.Category,
@@ -46,7 +46,7 @@ namespace HouseRentingSystem.Controllers
         {
             IEnumerable<HouseServiceModel> model;
             string userId = User.Id();
-            if(await agentService.IsExistByIdAsync(userId))
+            if (await agentService.IsExistByIdAsync(userId))
             {
                 int agentId = await agentService.GetAgentIdByUserIdAsync(userId);
                 model = await houseService.GetMineHousesByAgentIdAsync(agentId);
@@ -64,7 +64,7 @@ namespace HouseRentingSystem.Controllers
         {
             HouseDetailsViewModel? model = await houseService.GetHouseDetailsByIdAsync(id);
 
-            if(model == null)
+            if (model == null)
             {
                 return BadRequest();
             }
@@ -114,20 +114,63 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View(new HouseFormModel());
+            if (!await houseService.IsHouseExistById(id))
+            {
+                return BadRequest();
+            }
+
+            string userId = User.Id();
+            if (!await agentService.IsExistByIdAsync(userId))
+            {
+                return RedirectToAction(nameof(AgentController.Become), "Agent");
+            }
+
+            if (!await houseService.IsUserOwnerByIdAsync(userId, id))
+            {
+                return Unauthorized();
+            }
+
+            HouseFormModel model = await houseService.GetHouseForEditAsync(id);
+            model.Categories = await houseService.GetAllCategoriesAsync();
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(HouseFormModel model)
+        public async Task<IActionResult> Edit(HouseFormModel model, int id)
         {
+            string userId = User.Id();
+            if (!await agentService.IsExistByIdAsync(userId))
+            {
+                return RedirectToAction(nameof(AgentController.Become), "Agent");
+            }
+
+            if (!await houseService.IsHouseExistById(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await houseService.IsUserOwnerByIdAsync(userId, id))
+            {
+                return Unauthorized();
+            }
+
+            if (!await houseService.IsCategoryExistByIdAsync(model.CategoryId))
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Please choose valid category");
+            }
+
             if (!ModelState.IsValid)
             {
+                model.Categories = await houseService.GetAllCategoriesAsync();
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+            await houseService.EditHouseAsync(model, id);
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         [HttpGet]

@@ -77,10 +77,10 @@ namespace HouseRentingSystem.Core.Services
                 .ToArrayAsync();
 
         public async Task<HouseQueryServiceModel> AllQueryableAsync(
-            string? category, 
-            string? searchTerm, 
-            HouseSorting sorting, 
-            int currentPage, 
+            string? category,
+            string? searchTerm,
+            HouseSorting sorting,
+            int currentPage,
             int housesPerPage)
         {
             IQueryable<House> housesQuery = context
@@ -108,7 +108,7 @@ namespace HouseRentingSystem.Core.Services
                 HouseSorting.Oldest => housesQuery
                     .OrderBy(h => h.Id),
                 HouseSorting.PriceAscending => housesQuery
-                    .OrderBy (h => h.PricePerMonth),
+                    .OrderBy(h => h.PricePerMonth),
                 HouseSorting.PriceDescending => housesQuery
                     .OrderBy(h => h.PricePerMonth),
                 HouseSorting.NotRentedFirst => housesQuery
@@ -117,7 +117,7 @@ namespace HouseRentingSystem.Core.Services
                 _ => housesQuery.OrderByDescending(h => h.Id),
             };
 
-            var houses  = await housesQuery
+            var houses = await housesQuery
                 .AsNoTracking()
                 .Skip((currentPage - 1) * housesPerPage)
                 .Take(housesPerPage)
@@ -145,7 +145,7 @@ namespace HouseRentingSystem.Core.Services
             => await context
                 .Houses
                 .AsNoTracking()
-                .Where(h=> h.Id == houseId)
+                .Where(h => h.Id == houseId)
                 .Select(h => new HouseDetailsViewModel
                 {
                     Id = h.Id,
@@ -193,5 +193,45 @@ namespace HouseRentingSystem.Core.Services
                     IsRented = h.RenterId != null,
                 })
                 .ToArrayAsync();
+
+        public async Task<bool> EditHouseAsync(HouseFormModel model, int houseId)
+        {
+            House? houseEntity = await context.Houses.FindAsync(houseId);
+
+            if (houseEntity == null)
+            {
+                return false;
+            }
+
+            houseEntity.Title = model.Title;
+            houseEntity.Address = model.Address;
+            houseEntity.Description = model.Description;
+            houseEntity.ImageUrl = model.ImageUrl;
+            houseEntity.PricePerMonth = model.PricePerMonth;
+            houseEntity.CategoryId = model.CategoryId;
+
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> IsHouseExistById(int houseId)
+            => await context.Houses.AnyAsync(h => h.Id == houseId);
+
+        public async Task<bool> IsUserOwnerByIdAsync(string userId, int houseId)
+            => await context.Houses.AnyAsync(h => h.Agent.UserId == userId && h.Id == houseId);
+
+        public async Task<HouseFormModel> GetHouseForEditAsync(int houseId)
+            => await context.Houses
+            .Where(h => h.Id == houseId)
+            .Select(h => new HouseFormModel
+            {
+                Title = h.Title,
+                Address = h.Address,
+                Description = h.Description,
+                ImageUrl = h.ImageUrl,
+                PricePerMonth = h.PricePerMonth,
+                CategoryId = h.CategoryId,
+            })
+            .FirstAsync();
     }
 }
