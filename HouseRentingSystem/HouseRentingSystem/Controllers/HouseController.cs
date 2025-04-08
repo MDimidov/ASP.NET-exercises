@@ -221,13 +221,31 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Rent()
+        public async Task<IActionResult> Rent(int id)
         {
+            if(!await houseService.IsHouseExistById(id))
+            {
+                return BadRequest();
+            }
+
+            if(await houseService.IsRentedByIdAsync(id))
+            {
+                return BadRequest();
+            }
+
+            string userId = User.Id();
+            if(await agentService.IsExistByIdAsync(userId))
+            {
+                return Unauthorized();
+            }
+
+            await houseService.RentHouseByIdAsync(userId, id);
+
             return RedirectToAction(nameof(Mine));
         }
 
         [HttpPost]
-        public IActionResult Leave()
+        public IActionResult Leave(int id)
         {
             return RedirectToAction(nameof(Mine));
         }
