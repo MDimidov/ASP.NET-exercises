@@ -140,5 +140,28 @@ namespace HouseRentingSystem.Core.Services
                 Houses = houses,
             };
         }
+
+        public async Task<HouseDetailsViewModel?> GetHouseDetailsByIdAsync(int houseId)
+            => await context
+                .Houses
+                .AsNoTracking()
+                .Where(h=> h.Id == houseId)
+                .Select(h => new HouseDetailsViewModel
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    Description = h.Description,
+                    Category = h.Category.Name,
+                    IsRented = h.RenterId != null,
+                    Agent = new Models.Agent.AgentServiceModel
+                    {
+                        PhoneNumber = h.Agent.PhoneNumber,
+                        Email = h.Agent.User.Email ?? string.Empty,
+                    }
+                })
+                .FirstOrDefaultAsync();
     }
 }

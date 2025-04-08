@@ -17,5 +17,6 @@ namespace HouseRentingSystem.Core.Contracts
             HouseSorting sorting = HouseSorting.Newest,
             int currentPage = 1,
             int housesPerPage = 1);
+        Task<HouseDetailsViewModel?> GetHouseDetailsByIdAsync(int houseId);
     }
 }
