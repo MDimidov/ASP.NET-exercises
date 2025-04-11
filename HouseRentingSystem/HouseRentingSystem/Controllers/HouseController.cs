@@ -3,7 +3,6 @@ using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace HouseRentingSystem.Controllers
 {

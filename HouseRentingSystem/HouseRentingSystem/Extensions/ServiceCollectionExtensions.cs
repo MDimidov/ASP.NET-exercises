@@ -1,6 +1,7 @@
 ﻿using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Services;
 using HouseRentingSystem.Infrastructure;
+using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<HouseRentingDbContext>(options =>
                 options.UseSqlServer(connectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddScoped<IRepository, Repository>();
 
             return services;
         }
