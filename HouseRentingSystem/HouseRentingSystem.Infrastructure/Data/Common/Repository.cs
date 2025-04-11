@@ -7,7 +7,7 @@ namespace HouseRentingSystem.Infrastructure.Data.Common
     {
         private readonly DbContext context;
 
-        public Repository(DbContext context)
+        public Repository(HouseRentingDbContext context)
         {
             this.context = context;
         }

@@ -1,5 +1,6 @@
 ﻿using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Infrastructure;
+using HouseRentingSystem.Infrastructure.Data.Common;
 using HouseRentingSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,14 @@ namespace HouseRentingSystem.Core.Services
     {
 
         private readonly HouseRentingDbContext context;
+        private readonly IRepository repository;
 
-        public AgentService(HouseRentingDbContext context)
+        public AgentService(
+            HouseRentingDbContext context, 
+            IRepository repository)
         {
             this.context = context;
+            this.repository = repository;
         }
 
         public async Task<bool> CreateAsync(string userId, string phoneNumber)
@@ -40,8 +45,7 @@ namespace HouseRentingSystem.Core.Services
         {
             try
             {
-                int agentId = await context.Agents
-                    .AsNoTracking()
+                int agentId = await repository.AllAsReadOnly<Agent>()
                     .Where(a => a.UserId == userId)
                     .Select(a => a.Id)
                     .FirstOrDefaultAsync();
@@ -55,12 +59,12 @@ namespace HouseRentingSystem.Core.Services
         }
 
         public async Task<bool> IsExistByIdAsync(string userId)
-            => await context.Agents.AnyAsync(a => a.UserId == userId);
+            => await repository.AllAsReadOnly<Agent>().AnyAsync(a => a.UserId == userId);
 
         public async Task<bool> IsExistByPhoneNumberAsync(string phoneNumber)
-            => await context.Agents.AnyAsync(a => a.PhoneNumber == phoneNumber);
+            => await repository.AllAsReadOnly<Agent>().AnyAsync(a => a.PhoneNumber == phoneNumber);
 
         public async Task<bool> IsUserHasRentsAsync(string userId)
-            => await context.Houses.AnyAsync(h => h.RenterId == userId);
+            => await repository.AllAsReadOnly<House>().AnyAsync(h => h.RenterId == userId);
     }
 }

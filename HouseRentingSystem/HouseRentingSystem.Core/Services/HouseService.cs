@@ -2,6 +2,7 @@
 using HouseRentingSystem.Core.Enums;
 using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Infrastructure;
+using HouseRentingSystem.Infrastructure.Data.Common;
 using HouseRentingSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,14 @@ namespace HouseRentingSystem.Core.Services
     public class HouseService : IHouseService
     {
         private readonly HouseRentingDbContext context;
+        private readonly IRepository repository;
 
-        public HouseService(HouseRentingDbContext context)
+        public HouseService(
+            HouseRentingDbContext context,
+            IRepository repository)
         {
             this.context = context;
+            this.repository = repository;
         }
 
         public async Task<IEnumerable<HouseCategoryServiceModel>> GetAllCategoriesAsync()
@@ -31,8 +36,7 @@ namespace HouseRentingSystem.Core.Services
                 .AnyAsync(c => c.Id == categoryId);
 
         public async Task<IEnumerable<HouseIndexServiceModel>> LastThreeHousesAsync()
-            => await context.Houses
-                .AsNoTracking()
+            => await repository.AllAsReadOnly<House>()
                 .OrderByDescending(h => h.Id)
                 .Select(h => new HouseIndexServiceModel()
                 {
