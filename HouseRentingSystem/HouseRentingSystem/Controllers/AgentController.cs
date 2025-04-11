@@ -39,7 +39,7 @@ namespace HouseRentingSystem.Controllers
                 return BadRequest();
             }
 
-            if (await agentService.IsExistByPhoneNumberAsync(userId))
+            if (await agentService.IsExistByPhoneNumberAsync(model.PhoneNumber))
             {
                 ModelState.AddModelError(nameof(model.PhoneNumber),
                     "Phone number already exist. Enter another phone.");

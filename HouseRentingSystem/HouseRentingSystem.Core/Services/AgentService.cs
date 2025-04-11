@@ -1,5 +1,4 @@
 ﻿using HouseRentingSystem.Core.Contracts;
-using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Data.Common;
 using HouseRentingSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +8,10 @@ namespace HouseRentingSystem.Core.Services
     public class AgentService : IAgentService
     {
 
-        private readonly HouseRentingDbContext context;
         private readonly IRepository repository;
 
-        public AgentService(
-            HouseRentingDbContext context, 
-            IRepository repository)
+        public AgentService(IRepository repository)
         {
-            this.context = context;
             this.repository = repository;
         }
 
@@ -30,8 +25,8 @@ namespace HouseRentingSystem.Core.Services
                     UserId = userId
                 };
 
-                await context.Agents.AddAsync(agent);
-                await context.SaveChangesAsync();
+                await repository.AddAsync(agent);
+                await repository.SaveChangesAsync();
                 return true;
             }
             catch (Exception)

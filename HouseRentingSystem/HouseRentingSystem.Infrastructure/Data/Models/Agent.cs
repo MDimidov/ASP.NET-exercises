@@ -6,6 +6,7 @@ using AgentConst = HouseRentingSystem.Infrastructure.Constants.DataConstants.Age
 
 namespace HouseRentingSystem.Infrastructure.Data.Models
 {
+    [Index(nameof(PhoneNumber), IsUnique = true)]
     [Comment("House agent")]
     public class Agent
     {
