@@ -22,6 +22,9 @@ namespace HouseRentingSystem.Infrastructure.Data.Common
             => DbSet<T>()
                 .AsNoTracking();
 
+        public void Remove<T>(T entity) where T : class
+            => DbSet<T>().Remove(entity);
+
         public async Task<int> SaveChangesAsync()
             => await context.SaveChangesAsync();
 

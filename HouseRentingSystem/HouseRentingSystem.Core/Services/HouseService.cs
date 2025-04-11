@@ -1,7 +1,6 @@
 ﻿using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Enums;
 using HouseRentingSystem.Core.Models.House;
-using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Data.Common;
 using HouseRentingSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,20 +9,16 @@ namespace HouseRentingSystem.Core.Services
 {
     public class HouseService : IHouseService
     {
-        private readonly HouseRentingDbContext context;
         private readonly IRepository repository;
 
-        public HouseService(
-            HouseRentingDbContext context,
-            IRepository repository)
+        public HouseService(IRepository repository)
         {
-            this.context = context;
             this.repository = repository;
         }
 
         public async Task<IEnumerable<HouseCategoryServiceModel>> GetAllCategoriesAsync()
-            => await context.Categories
-                .AsNoTracking()
+            => await repository
+                .AllAsReadOnly<Category>()
                 .Select(c => new HouseCategoryServiceModel
                 {
                     Id = c.Id,
@@ -32,7 +27,8 @@ namespace HouseRentingSystem.Core.Services
                 .ToArrayAsync();
 
         public async Task<bool> IsCategoryExistByIdAsync(int categoryId)
-            => await context.Categories
+            => await repository
+                .AllAsReadOnly<Category>()
                 .AnyAsync(c => c.Id == categoryId);
 
         public async Task<IEnumerable<HouseIndexServiceModel>> LastThreeHousesAsync()
@@ -62,8 +58,8 @@ namespace HouseRentingSystem.Core.Services
                     AgentId = agentId
                 };
 
-                await context.Houses.AddAsync(house);
-                await context.SaveChangesAsync();
+                await repository.AddAsync(house);
+                await repository.SaveChangesAsync();
 
                 return house.Id;
             }
@@ -74,8 +70,8 @@ namespace HouseRentingSystem.Core.Services
         }
 
         public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
-            => await context.Categories
-                .AsNoTracking()
+            => await repository
+                .AllAsReadOnly<Category>()
                 .Select(c => c.Name)
                 .Distinct()
                 .ToArrayAsync();
@@ -87,8 +83,8 @@ namespace HouseRentingSystem.Core.Services
             int currentPage,
             int housesPerPage)
         {
-            IQueryable<House> housesQuery = context
-                .Houses
+            IQueryable<House> housesQuery = repository
+                .All<House>()
                 .Include(h => h.Category)
                 .AsQueryable();
 
@@ -146,9 +142,8 @@ namespace HouseRentingSystem.Core.Services
         }
 
         public async Task<HouseDetailsViewModel?> GetHouseDetailsByIdAsync(int houseId)
-            => await context
-                .Houses
-                .AsNoTracking()
+            => await repository
+                .AllAsReadOnly<House>()
                 .Where(h => h.Id == houseId)
                 .Select(h => new HouseDetailsViewModel
                 {
@@ -169,8 +164,8 @@ namespace HouseRentingSystem.Core.Services
                 .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<HouseServiceModel>> GetMineHousesByAgentIdAsync(int agentId)
-            => await context.Houses
-                .AsNoTracking()
+            => await repository
+                .AllAsReadOnly<House>()
                 .Where(h => h.AgentId == agentId)
                 .Select(h => new HouseServiceModel
                 {
@@ -184,8 +179,8 @@ namespace HouseRentingSystem.Core.Services
                 .ToArrayAsync();
 
         public async Task<IEnumerable<HouseServiceModel>> GetMineHousesByUserIdAsync(string userId)
-            => await context.Houses
-                .AsNoTracking()
+            => await repository
+                .AllAsReadOnly<House>()
                 .Where(h => h.RenterId == userId)
                 .Select(h => new HouseServiceModel
                 {
@@ -200,7 +195,10 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task<bool> EditHouseAsync(HouseFormModel model, int houseId)
         {
-            House? houseEntity = await context.Houses.FindAsync(houseId);
+            House? houseEntity = await repository
+                .All<House>()
+                .Where(h => h.Id == houseId)
+                .FirstOrDefaultAsync();
 
             if (houseEntity == null)
             {
@@ -214,18 +212,23 @@ namespace HouseRentingSystem.Core.Services
             houseEntity.PricePerMonth = model.PricePerMonth;
             houseEntity.CategoryId = model.CategoryId;
 
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> IsHouseExistById(int houseId)
-            => await context.Houses.AnyAsync(h => h.Id == houseId);
+            => await repository
+            .AllAsReadOnly<House>()
+            .AnyAsync(h => h.Id == houseId);
 
         public async Task<bool> IsUserOwnerByIdAsync(string userId, int houseId)
-            => await context.Houses.AnyAsync(h => h.Agent.UserId == userId && h.Id == houseId);
+            => await repository
+            .AllAsReadOnly<House>()
+            .AnyAsync(h => h.Agent.UserId == userId && h.Id == houseId);
 
         public async Task<HouseFormModel> GetHouseForEditAsync(int houseId)
-            => await context.Houses
+            => await repository
+            .AllAsReadOnly<House>()
             .Where(h => h.Id == houseId)
             .Select(h => new HouseFormModel
             {
@@ -240,21 +243,25 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task<bool> DeleteHouseByIdAsync(int houseId)
         {
-            House? houseEntity = await context.Houses.FindAsync(houseId);
+            House? houseEntity = await repository
+                .All<House>()
+                .FirstOrDefaultAsync(h => h.Id == houseId);
 
             if(houseEntity == null)
             {
                 return false;
             }
 
-            context.Houses.Remove(houseEntity);
-            await context.SaveChangesAsync();
+            repository.Remove(houseEntity);
+            await repository.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> RentHouseByIdAsync(string userId, int houseId)
         {
-            House? houseEntity = await context.Houses.FindAsync(houseId);
+            House? houseEntity = await repository
+                .All<House>()
+                .FirstOrDefaultAsync(h => h.Id == houseId);
 
             if (houseEntity == null)
             {
@@ -262,19 +269,25 @@ namespace HouseRentingSystem.Core.Services
             }
 
             houseEntity.RenterId = userId;
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> IsRentedByIdAsync(int houseId)
-            => await context.Houses.AnyAsync(h => h.RenterId != null && h.Id == houseId);
+            => await repository
+            .AllAsReadOnly<House>()
+            .AnyAsync(h => h.RenterId != null && h.Id == houseId);
 
         public async Task<bool> IsUserRentHouseByIdAsync(string userId, int houseId)
-            => await context.Houses.AnyAsync(h => h.RenterId == userId && h.Id == houseId);
+            => await repository
+            .AllAsReadOnly<House>()
+            .AnyAsync(h => h.RenterId == userId && h.Id == houseId);
 
         public async Task<bool> LeaveHouseAsync(int houseId)
         {
-            House? houseEntity = await context.Houses.FindAsync(houseId);
+            House? houseEntity = await repository.
+                All<House>()
+                .FirstOrDefaultAsync(h => h.Id == houseId);
 
             if (houseEntity == null)
             {
@@ -282,7 +295,7 @@ namespace HouseRentingSystem.Core.Services
             }
 
             houseEntity.RenterId = null;
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
             return true;
         }
     }
