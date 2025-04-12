@@ -1,4 +1,5 @@
-﻿using HouseRentingSystem.Core.Contracts;
+﻿using HouseRentingSystem.Attributes;
+using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -72,13 +73,9 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpGet]
+        [MustBeAgent]
         public async Task<IActionResult> Add()
         {
-            if (!await agentService.IsExistByIdAsync(User.Id()))
-            {
-                return RedirectToAction(nameof(AgentController.Become), "Agent");
-            }
-
             HouseFormModel model = new()
             {
                 Categories = await houseService.GetAllCategoriesAsync()
@@ -88,13 +85,9 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpPost]
+        [MustBeAgent]
         public async Task<IActionResult> Add(HouseFormModel model)
         {
-            if (!await agentService.IsExistByIdAsync(User.Id()))
-            {
-                return RedirectToAction(nameof(AgentController.Become), "Agent");
-            }
-
             if (!await houseService.IsCategoryExistByIdAsync(model.CategoryId))
             {
                 ModelState.AddModelError(nameof(model.CategoryId), "Please choose valid category");
@@ -113,6 +106,7 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpGet]
+        [MustBeAgent]
         public async Task<IActionResult> Edit(int id)
         {
             if (!await houseService.IsHouseExistById(id))
@@ -121,10 +115,6 @@ namespace HouseRentingSystem.Controllers
             }
 
             string userId = User.Id();
-            if (!await agentService.IsExistByIdAsync(userId))
-            {
-                return RedirectToAction(nameof(AgentController.Become), "Agent");
-            }
 
             if (!await houseService.IsUserOwnerByIdAsync(userId, id))
             {
@@ -138,13 +128,10 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpPost]
+        [MustBeAgent]
         public async Task<IActionResult> Edit(HouseFormModel model, int id)
         {
             string userId = User.Id();
-            if (!await agentService.IsExistByIdAsync(userId))
-            {
-                return RedirectToAction(nameof(AgentController.Become), "Agent");
-            }
 
             if (!await houseService.IsHouseExistById(id))
             {
@@ -173,13 +160,10 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpGet]
+        [MustBeAgent]
         public async Task<IActionResult> Delete(int id)
         {
             string userId = User.Id();
-            if (!await agentService.IsExistByIdAsync(userId))
-            {
-                return RedirectToAction(nameof(AgentController.Become), "Agent");
-            }
 
             HouseDetailsViewModel? model = await houseService.GetHouseDetailsByIdAsync(id);
             if (model == null)
@@ -196,13 +180,10 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpPost]
+        [MustBeAgent]
         public async Task<IActionResult> Delete(int id, HouseDetailsViewModel model)
         {
             string userId = User.Id();
-            if (!await agentService.IsExistByIdAsync(userId))
-            {
-                return RedirectToAction(nameof(AgentController.Become), "Agent");
-            }
 
             if (!await houseService.IsHouseExistById(id))
             {
@@ -220,6 +201,7 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpPost]
+        [NotAnAgent]
         public async Task<IActionResult> Rent(int id)
         {
             if(!await houseService.IsHouseExistById(id))
@@ -233,10 +215,6 @@ namespace HouseRentingSystem.Controllers
             }
 
             string userId = User.Id();
-            if(await agentService.IsExistByIdAsync(userId))
-            {
-                return Unauthorized();
-            }
 
             await houseService.RentHouseByIdAsync(userId, id);
 
